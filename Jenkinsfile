@@ -8,12 +8,11 @@ pipeline {
                 checkout scm
             }
         }
-
-        stage('Push to imgprac2') {
+stage('Push to imgprac2') {
     steps {
         withCredentials([
             usernamePassword(
-                credentialsId: 'github-credetials',
+                credentialsId: 'github-credentials',
                 usernameVariable: 'GIT_USERNAME',
                 passwordVariable: 'GIT_PASSWORD'
             )
@@ -22,10 +21,21 @@ pipeline {
                 "C:\\Program Files\\Git\\cmd\\git.exe" config user.name "%GIT_USERNAME%"
                 "C:\\Program Files\\Git\\cmd\\git.exe" config user.email "praveenjb01@gmail.com"
 
+                set "HOME=%WORKSPACE%"
+
+                echo protocol=https> "%WORKSPACE%\\git-credential-input.txt"
+                echo host=github.com>> "%WORKSPACE%\\git-credential-input.txt"
+                echo username=%GIT_USERNAME%>> "%WORKSPACE%\\git-credential-input.txt"
+                echo password=%GIT_PASSWORD%>> "%WORKSPACE%\\git-credential-input.txt"
+
+                "C:\\Program Files\\Git\\cmd\\git.exe" credential approve < "%WORKSPACE%\\git-credential-input.txt"
+
                 "C:\\Program Files\\Git\\cmd\\git.exe" remote remove target 2>NUL
-                "C:\\Program Files\\Git\\cmd\\git.exe" remote add target https://%GIT_USERNAME%:%GIT_PASSWORD%@github.com/PRAVEEN050701/imgprac2.git
+                "C:\\Program Files\\Git\\cmd\\git.exe" remote add target https://github.com/PRAVEEN050701/imgprac2.git
 
                 "C:\\Program Files\\Git\\cmd\\git.exe" push target HEAD:main
+
+                del "%WORKSPACE%\\git-credential-input.txt"
             '''
                 }
             }
