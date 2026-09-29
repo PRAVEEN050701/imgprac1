@@ -9,22 +9,23 @@ pipeline {
             }
         }
 
-       stage('Push to imgprac2') {
-         steps {
-             withCredentials([
-                 usernamePassword(
-                     credentialsId: 'github-credetials',
-                     usernameVariable: 'GIT_USERNAME',
-                     passwordVariable: 'GIT_PASSWORD'
+      stage('Push to imgprac2') {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'github-credetials',
+                usernameVariable: 'GIT_USERNAME',
+                passwordVariable: 'GIT_PASSWORD'
             )
         ]) {
             bat '''
                 "C:\\Program Files\\Git\\cmd\\git.exe" config user.name "%GIT_USERNAME%"
                 "C:\\Program Files\\Git\\cmd\\git.exe" config user.email "praveenjb01@gmail.com"
 
-                "C:\\Program Files\\Git\\cmd\\git.exe" remote add target https://%GIT_USERNAME%:%GIT_PASSWORD%@github.com/PRAVEEN050701/imgprac2.git
+                "C:\\Program Files\\Git\\cmd\\git.exe" remote remove target 2>NUL
+                "C:\\Program Files\\Git\\cmd\\git.exe" remote add target https://github.com/PRAVEEN050701/imgprac2.git
 
-                "C:\\Program Files\\Git\\cmd\\git.exe" push target HEAD:main
+                "C:\\Program Files\\Git\\cmd\\git.exe" -c http.extraheader="Authorization: Basic %GIT_USERNAME%:%GIT_PASSWORD%" push target HEAD:main
             '''
                 }
             }
