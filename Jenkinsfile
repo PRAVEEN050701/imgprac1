@@ -33,7 +33,7 @@ stage('Push to imgprac2') {
                 "C:\\Program Files\\Git\\cmd\\git.exe" remote remove target 2>NUL
                 "C:\\Program Files\\Git\\cmd\\git.exe" remote add target https://github.com/PRAVEEN050701/imgprac2.git
 
-                "C:\\Program Files\\Git\\cmd\\git.exe" push target HEAD:main
+                "C:\\Program Files\\Git\\cmd\\git.exe" push target HEAD:refs/heads/main
 
                 del "%WORKSPACE%\\git-credential-input.txt"
             '''
