@@ -12,7 +12,7 @@ stage('Push to imgprac2') {
     steps {
         withCredentials([
             usernamePassword(
-                credentialsId: 'github-credentials',
+                credentialsId: 'github-credetials',
                 usernameVariable: 'GIT_USERNAME',
                 passwordVariable: 'GIT_PASSWORD'
             )
